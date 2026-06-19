@@ -1,3 +1,9 @@
+![Python](https://img.shields.io/badge/python-3.12-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-05998b.svg)
+![Unsloth](https://img.shields.io/badge/Unsloth-Optimized-orange.svg)
+![CUDA](https://img.shields.io/badge/CUDA-12.x-green.svg)
+![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
+
 # BioNLP LLaMA-3 NER Microservice
 A production-ready, hardware-aware FastAPI microservice designed for high-throughput Biological Named Entity Recognition (NER). This architecture bridges the gap between state-of-the-art LLM capabilities and resource-constrained production environments.
 
@@ -175,12 +181,21 @@ Internet: Ensure the Internet toggle in the settings sidebar is set to On.
 
 ---
 
-## 📦 Requirements
+## 📋 Requirements & Prerequisites
 
-| File | Use | Command |
+### Prerequisites
+Before installing the dependencies, ensure your environment meets the following specifications:
+
+* **Python:** Version 3.10 or higher.
+* **GPU Drivers (GPU Mode Only):** NVIDIA drivers with CUDA 12.x support installed.
+* **Memory (GPU Mode Only):** Minimum 16GB RAM and a GPU with at least 8GB VRAM (T4/P100 recommended).
+
+### Dependency Installation
+The project uses environment-specific dependency files to manage the split between lightweight API testing and resource-heavy model execution.
+
+| File | Use Case | Installation Command |
 |:---|:---|:---|
-| `requirements-api.txt` | Local testing | `pip install -r requirements-api.txt` |
-| `requirements-gpu.txt` | GPU production | `pip install -r requirements-gpu.txt` |
+| `requirements-api.txt` | Local testing, schema dev, CI/CD | `pip install -r requirements-api.txt` |
+| `requirements-gpu.txt` | Production inference, Unsloth, Triton | `pip install -r requirements-gpu.txt` |
 
----
-
+> **Note:** When deploying to production (Kaggle/Cloud), always use the `requirements-gpu.txt` file. This includes `bitsandbytes` and `triton` kernels required for 4-bit quantization which are not supported on standard CPU-only environments.
