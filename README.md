@@ -72,12 +72,13 @@ Navigate to **http://localhost:8000/docs** for the interactive UI.
 [JSON In] → [Pydantic] → [BioNLPEngine] → [Parser] → [JSON Out]
 ```
 
-**Steps:**
-1. Prompt formatting (**Alpaca layout**)
-2. Token generation (structured tuples)
-3. Truncation at terminal `]`
-4. `ast.literal_eval()` for safe parsing
-5. Pydantic validation
+### **The Extraction & Parsing Pipeline**
+
+1. **Prompt Formatting:** Uses a rigid Alpaca instruction-tuning layout to minimize hallucinations and enforce context.
+2. **Token Generation:** Constrains the LLM to output predictable Python-serialized tuples, optimizing for token density.
+3. **Deterministic Isolation:** Middleware scans for the terminal `]` to truncate "trailing noise" common in LLM generations.
+4. **Symbolic Evaluation:** Utilizes `ast.literal_eval()` for secure, risk-free conversion of string-based literals into typed objects.
+5. **Pydantic Validation:** Maps unstructured extractions into rigid data contracts, ensuring strict schema compliance before the response exits the system.
 
 ---
 
