@@ -49,6 +49,7 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 |:---|:---|:---|
 | GET | `/health` | Liveness probe |
 | POST | `/v1/extract` | NER extraction |
+![Loading](assets/bionlp_01.png)
 
 **Pipeline:**
 ```
@@ -76,6 +77,7 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 }
 ```
 4. Click **Execute**
+![Docs](assets/bionlp_02.png)
 
 ---
 ## 📸 Interface Gallery
