@@ -49,6 +49,7 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 |:---|:---|:---|
 | GET | `/health` | Liveness probe |
 | POST | `/v1/extract` | NER extraction |
+---
 ![Loading](assets/bionlp_01.png)
 
 **Pipeline:**
@@ -77,6 +78,7 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 }
 ```
 4. Click **Execute**
+---
 ![Docs](assets/bionlp_02.png)
 
 ---
@@ -115,9 +117,16 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 
 ## 🧬 Model
 
-| Attribute | Value |
-|:---|:---|
-| Base | LLaMA-3 8B |
-| Quantization | Unsloth 4-bit |
-| Fine-tuning | LoRA on biomedical NER |
-| Inference | Triton kernels |
+- Base: *LLaMA-3 8B*
+- Quantization: *Unsloth 4-bit* 
+- ine-tuning:  *LoRA on biomedical NER*
+  *This model takes a medical or biological text as input and identifies and extracts the following five entity types:*
+  *- DNA*
+  *- RNA*
+  *- protein*
+  *- cell_type*
+  *- cell_line*
+  
+   The output is a clean, machine-readable Python list of tuples. read more : **![Arnic/llama-3-8b-bionlp-ner](https://huggingface.co/Arnic/llama-3-8b-bionlp-ner)**
+  
+- nference: Triton kernels 
