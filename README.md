@@ -127,6 +127,6 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
   *- cell_type*
   *- cell_line*
   
-   The output is a clean, machine-readable Python list of tuples. read more : **![Arnic/llama-3-8b-bionlp-ner](https://huggingface.co/Arnic/llama-3-8b-bionlp-ner)**
+   The output is a clean, machine-readable Python list of tuples. read more : **[Arnic/llama-3-8b-bionlp-ner](https://huggingface.co/Arnic/llama-3-8b-bionlp-ner)**
   
 - nference: Triton kernels 
