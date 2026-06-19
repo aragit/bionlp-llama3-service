@@ -78,6 +78,11 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 4. Click **Execute**
 
 ---
+## 📸 Interface Gallery
+
+| Initial Loading | Schema Interaction | Extraction Result |
+|:---:|:---:|:---:|
+| ![Loading](assets/bionlp_01.png) | ![Docs](assets/bionlp_02.png) | ![Result](assets/bionlp_03.png) |
 
 ## 🚀 Kaggle Deploy
 
