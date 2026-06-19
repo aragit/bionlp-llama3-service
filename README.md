@@ -1,6 +1,27 @@
 # BioNLP LLaMA-3 NER Microservice
+A production-ready, hardware-aware FastAPI microservice designed for high-throughput Biological Named Entity Recognition (NER). This architecture bridges the gap between state-of-the-art LLM capabilities and resource-constrained production environments.
 
-A production-ready, hardware-aware FastAPI microservice for Biological Named Entity Recognition (NER). Exposes an inference gateway for a fine-tuned LLaMA-3 8B model with Unsloth 4-bit quantization.
+By leveraging Unsloth’s Triton-optimized inference kernels and 4-bit quantization, this microservice delivers low-latency entity extraction on minimal VRAM footprints, making it ideal for deployment on consumer-grade GPUs or edge-cloud instances.
+
+## 🏗️ Technical Philosophy
+This service moves away from monolithic model serving by enforcing a decoupled architecture:
+
+- Compute Optimization: By utilizing 4-bit bitsandbytes quantization combined with Unsloth's optimized Triton kernels, we drastically reduce the VRAM overhead required to hold the model weights, enabling 8B parameter models to run on lower-tier GPUs (like the T4) without significant performance degradation.
+
+- API-Inference Decoupling: The architecture separates the FastAPI ingestion layer from the heavy inference chassis. The API handles schema validation and payload parsing, while the engine manages stateful model execution. This allows for horizontal scaling of the API layer independently of the compute-heavy model engine.
+
+- Deterministic Parsing: We bypass the unreliability of standard LLM generation by forcing structured output, which is then passed through a symbol-evaluation pipeline (ast.literal_eval). This ensures that the unstructured text output of the LLM is transformed into strict, type-safe data objects before reaching the client.
+
+##🔬 Practical Applications
+This microservice is built to power high-utility biological data processing pipelines, including:
+
+- Automated Biomedical Literature Mining: Extracting gene, protein, and cell-line mentions from thousands of PubMed abstracts at scale for meta-analysis.
+
+- Clinical Decision Support Systems (CDSS): Parsing unstructured electronic health records (EHR) to map symptoms and biomarkers to standardized ontologies (e.g., SNOMED-CT or MeSH).
+
+- Knowledge Graph Construction: Powering downstream automated graph construction by identifying entities and their relations (e.g., Protein-Protein Interactions or Drug-Target affinities) directly from raw scientific text.
+
+- Drug Discovery Pipelines: Expediting target identification by enabling high-throughput semantic search over vast repositories of unstructured pharmaceutical patent data.
 
 ---
 
@@ -104,21 +125,31 @@ Navigate to **http://localhost:8000/docs** for the interactive UI.
 |:---:|:---:|:---:|
 | ![Loading](assets/bionlp_01.png) | ![Docs](assets/bionlp_02.png) | ![Result](assets/bionlp_03.png) |
 
-## 🚀 Kaggle Deploy
 
-**1. Attach GPU T4 x2 or P100**
+## Target Production Deployment (Kaggle)
+To process live biomedical literature with hardware acceleration via Unsloth's optimized Triton kernels:
 
-**2. Setup:**
-```python
-!git clone https://github.com/aragit/bionlp-llama3-unsloth.git
-%cd bionlp-llama3-unsloth
+1. Notebook Configuration
+
+Accelerator: Set to GPU T4 x2 (or P100) in the right-hand sidebar.
+
+Internet: Ensure the Internet toggle in the settings sidebar is set to On.
+
+2. Environment Provisioning
+
+```Python
+!git clone https://github.com/aragit/bionlp-llama3-service.git
+%cd bionlp-llama3-service
 !pip install -r requirements-gpu.txt
 ```
+3. Execution Launch
 
-**3. Launch:**
-```python
+```Python
+# Launch the inference gateway
 !RUNTIME_ENV=gpu uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
+
+*Note: Because Kaggle notebooks run in a container, the API will be accessible internally. To access this API from your local machine, you will need to tunnel the connection using a utility like ngrok.*
 
 ---
 
