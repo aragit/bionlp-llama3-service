@@ -20,6 +20,21 @@ A production-ready, hardware-aware FastAPI microservice for Biological Named Ent
 ├── requirements-api.txt
 └── requirements-gpu.txt
 ```
+## 🧬 Model
+
+- Base: *LLaMA-3 8B*
+- Quantization: *Unsloth 4-bit* 
+- ine-tuning:  *LoRA on biomedical NER*
+  *This model takes a medical or biological text as input and identifies and extracts the following five entity types:*
+  *- DNA*
+  *- RNA*
+  *- protein*
+  *- cell_type*
+  *- cell_line*
+  
+   The output is a clean, machine-readable Python list of tuples. read more : **[Arnic/llama-3-8b-bionlp-ner](https://huggingface.co/Arnic/llama-3-8b-bionlp-ner)**
+  
+- nference: *Triton kernels* 
 
 ---
 
@@ -43,7 +58,7 @@ App binds to `http://0.0.0.0:8000`.
 
 ## 🔬 API Usage
 
-Navigate to `http://localhost:8000/docs` for the interactive UI.
+Navigate to **http://localhost:8000/docs** for the interactive UI.
 
 | Method | Path | Purpose |
 |:---|:---|:---|
@@ -58,7 +73,7 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 ```
 
 **Steps:**
-1. Prompt formatting (Alpaca layout)
+1. Prompt formatting (**Alpaca layout**)
 2. Token generation (structured tuples)
 3. Truncation at terminal `]`
 4. `ast.literal_eval()` for safe parsing
@@ -73,7 +88,7 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 3. Paste:
 ```json
 {
-  "text": "IL-2 stimulates T cell proliferation.",
+  "text": "IL-2 stimulates the proliferation of T cells and upregulates the transcription of specialized RNA sequences.",
   "max_new_tokens": 128
 }
 ```
@@ -115,18 +130,3 @@ Navigate to `http://localhost:8000/docs` for the interactive UI.
 
 ---
 
-## 🧬 Model
-
-- Base: *LLaMA-3 8B*
-- Quantization: *Unsloth 4-bit* 
-- ine-tuning:  *LoRA on biomedical NER*
-  *This model takes a medical or biological text as input and identifies and extracts the following five entity types:*
-  *- DNA*
-  *- RNA*
-  *- protein*
-  *- cell_type*
-  *- cell_line*
-  
-   The output is a clean, machine-readable Python list of tuples. read more : **[Arnic/llama-3-8b-bionlp-ner](https://huggingface.co/Arnic/llama-3-8b-bionlp-ner)**
-  
-- nference: Triton kernels 
