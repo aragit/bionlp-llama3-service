@@ -12,7 +12,7 @@ This service moves away from monolithic model serving by enforcing a decoupled a
 
 - Deterministic Parsing: We bypass the unreliability of standard LLM generation by forcing structured output, which is then passed through a symbol-evaluation pipeline (ast.literal_eval). This ensures that the unstructured text output of the LLM is transformed into strict, type-safe data objects before reaching the client.
 
-##🔬 Practical Applications
+## 🔬 Practical Applications
 This microservice is built to power high-utility biological data processing pipelines, including:
 
 - Automated Biomedical Literature Mining: Extracting gene, protein, and cell-line mentions from thousands of PubMed abstracts at scale for meta-analysis.
@@ -25,22 +25,44 @@ This microservice is built to power high-utility biological data processing pipe
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
 
-| Mode | Variable | Behavior |
-|:---|:---|:---|
-| Local Blueprint | `RUNTIME_ENV=local` | Emulates output for API testing without GPU |
-| GPU Production | `RUNTIME_ENV=gpu` | Boots Unsloth, loads 4-bit model, binds CUDA |
+
+
+The system implements a **Decoupled Micro-Kernel Architecture**, separating the API ingestion layer from the heavy-compute inference engine. This design allows for rapid development on local hardware (CPU) while ensuring high-performance production deployment on GPU clusters (CUDA).
+
+### 1. Architectural Components
+
+* **Ingestion Layer (FastAPI + Pydantic v2):** Serves as the service entry point. Pydantic v2 provides high-speed schema validation, ensuring that inbound requests meet specific type constraints before triggering any compute-heavy operations.
+* **Abstraction Engine (`BioNLPEngine`):** A Factory-pattern wrapper that abstracts the hardware interface. It handles environment-aware initialization—switching dynamically between a `MockEngine` for local testing and a `TritonEngine` for production.
+* **Inference Chassis (Unsloth + Triton):** The core execution layer. By utilizing Unsloth's optimized Triton kernels, we reduce the computational overhead of the LLaMA-3 8B model, achieving near-native inference speeds on consumer-grade and cloud-provider GPUs.
+* **Deterministic Parsing Layer:** Unlike traditional LLM pipelines that rely on fragile Regex, this layer uses `ast.literal_eval()` for secure, symbolic evaluation. It creates a robust bridge between the probabilistic nature of the LLM and the deterministic needs of your downstream data structures.
+
+### 2. Runtime Environment Strategy
+The system utilizes the `RUNTIME_ENV` injection variable to modify the execution stack at startup, enabling seamless transition across development and deployment cycles.
+
+| Environment | Engine Type | Capability | Target Hardware |
+|:---|:---|:---|:---|
+| `local` | `MockEngine` | Functional Schema Verification | Local CPU / IDE |
+| `gpu` | `TritonEngine` | 4-bit Quantized Inference | NVIDIA GPU (T4/P100/A100) |
+
+### 3. Execution Flow
+The pipeline follows a strict, unidirectional state machine flow to minimize latency and ensure data integrity:
 
 ```
-├── api/
-│   ├── main.py      # FastAPI app
-│   └── schemas.py   # Pydantic contracts
-├── core/
-│   └── engine.py    # Inference abstraction
-├── requirements-api.txt
-└── requirements-gpu.txt
+[HTTP Request] 
+      ↓
+[Pydantic Validation (Contract Verification)]
+      ↓
+[BioNLPEngine (State Check: Local vs. GPU)]
+      ↓
+[Model Generation (LLaMA-3 8B + 4-bit Quantization)]
+      ↓
+[Deterministic Parsing (AST Literal Evaluation)]
+      ↓
+[HTTP Response (Structured JSON Object)]
 ```
+
 ## 🧬 Model
 
 - Base: *LLaMA-3 8B*
