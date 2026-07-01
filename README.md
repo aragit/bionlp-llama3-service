@@ -1,5 +1,5 @@
 
-<h1 align="center">Biomedical Entity Extraction Engine (CE3)</h1>
+<h1 align="center">Biomedical Entity Extraction Engine</h1>
 
 <p align="center">
   <!-- API & Runtime -->
