@@ -1,10 +1,28 @@
-![Python](https://img.shields.io/badge/python-3.12-blue.svg)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-05998b.svg)
-![Unsloth](https://img.shields.io/badge/Unsloth-Optimized-orange.svg)
-![CUDA](https://img.shields.io/badge/CUDA-12.x-green.svg)
-![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 
-# BioNLP LLaMA-3 NER Microservice
+<h1 align="center">Biomedical Entity Extraction Engine (CE3)</h1>
+
+<p align="center">
+  <!-- API & Runtime -->
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10%2B-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python 3.10+"></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI 0.110+"></a>
+  <a href="https://docs.pydantic.dev/"><img src="https://img.shields.io/badge/Pydantic-v2-e92063.svg?style=flat-square&logo=pydantic&logoColor=white" alt="Pydantic v2"></a>
+  <a href="https://www.uvicorn.org/"><img src="https://img.shields.io/badge/Uvicorn-0.29%2B-4051B5.svg?style=flat-square&logo=python&logoColor=white" alt="Uvicorn 0.29+"></a>
+  <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Docker-24.0%2B-2496ED.svg?style=flat-square&logo=docker&logoColor=white" alt="Docker 24.0+"></a>
+</p>
+<p align="center">
+  <!-- ML & Inference -->
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.3%2B-EE4C2C.svg?style=flat-square&logo=pytorch&logoColor=white" alt="PyTorch 2.3+"></a>
+  <a href="https://huggingface.co/docs/transformers/"><img src="https://img.shields.io/badge/Transformers-4.40%2B-FFD21E.svg?style=flat-square&logo=huggingface&logoColor=black" alt="Transformers 4.40+"></a>
+  <a href="https://github.com/unslothai/unsloth"><img src="https://img.shields.io/badge/Unsloth-optimized-FF6B6B.svg?style=flat-square&logo=fire&logoColor=white" alt="Unsloth Optimized"></a>
+  <a href="https://github.com/TimDettmers/bitsandbytes"><img src="https://img.shields.io/badge/bitsandbytes-0.43%2B-76B900.svg?style=flat-square&logo=nvidia&logoColor=white" alt="bitsandbytes 0.43+"></a>
+  <a href="https://ai.meta.com/llama/"><img src="https://img.shields.io/badge/LLaMA--3-8B-0467DF.svg?style=flat-square&logo=meta&logoColor=white" alt="LLaMA-3 8B"></a>
+  <a href="https://huggingface.co/docs/peft/main/en/conceptual_guides/lora"><img src="https://img.shields.io/badge/LoRA-finetuned-8A2BE2.svg?style=flat-square&logo=layers&logoColor=white" alt="LoRA Fine-tuned"></a>
+  <a href="https://developer.nvidia.com/cuda-toolkit"><img src="https://img.shields.io/badge/CUDA-12.x-76B900.svg?style=flat-square&logo=nvidia&logoColor=white" alt="CUDA 12.x"></a>
+  <a href="https://www.kaggle.com/"><img src="https://img.shields.io/badge/Kaggle-Ready-20BEFF.svg?style=flat-square&logo=kaggle&logoColor=white" alt="Kaggle Ready"></a>
+</p>
+
+--- 
+
 A production-ready, hardware-aware FastAPI microservice designed for high-throughput Biological Named Entity Recognition (NER). This architecture bridges the gap between state-of-the-art LLM capabilities and resource-constrained production environments.
 
 By leveraging Unsloth’s Triton-optimized inference kernels and 4-bit quantization, this microservice delivers low-latency entity extraction on minimal VRAM footprints, making it ideal for deployment on consumer-grade GPUs or edge-cloud instances.
