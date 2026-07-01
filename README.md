@@ -37,7 +37,7 @@ By leveraging Unsloth’s Triton-optimized inference kernels and 4-bit quantizat
 - **FastAPI + Pydantic v2:** High-speed schema validation, auto-generated OpenAPI docs, async-ready endpoints
 - **Docker-Ready:** Single-command deployment with `docker-compose`
 
-
+---
 
 ## 🧭 Technical Philosophy
 This service moves away from monolithic model serving by enforcing a decoupled architecture:
@@ -47,6 +47,8 @@ This service moves away from monolithic model serving by enforcing a decoupled a
 - API-Inference Decoupling: The architecture separates the FastAPI ingestion layer from the heavy inference chassis. The API handles schema validation and payload parsing, while the engine manages stateful model execution. This allows for horizontal scaling of the API layer independently of the compute-heavy model engine.
 
 - Deterministic Parsing: We bypass the unreliability of standard LLM generation by forcing structured output, which is then passed through a symbol-evaluation pipeline (ast.literal_eval). This ensures that the unstructured text output of the LLM is transformed into strict, type-safe data objects before reaching the client.
+
+---
 
 ## 🔬 Practical Applications
 This microservice is built to power high-utility biological data processing pipelines, including:
@@ -98,6 +100,8 @@ The pipeline follows a strict, unidirectional state machine flow to minimize lat
       ↓
 [HTTP Response (Structured JSON Object)]
 ```
+
+---
 
 ## 🧬 Model
 
@@ -190,6 +194,7 @@ RUNTIME_ENV=gpu uvicorn api.main:app --host 0.0.0.0 --port 8000
 # In another terminal:
 python benchmark.py
 ```
+---
 
 ## 💻 Local Setup
 
@@ -206,6 +211,20 @@ pip install -r requirements-api.txt
 python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 App binds to `http://0.0.0.0:8000`.
+
+
+### 🧪 Try It
+
+1. Open `POST /v1/extract` in docs
+2. Click **Try it out**
+3. Paste:
+```json
+{
+  "text": "IL-2 stimulates the proliferation of T cells and upregulates the transcription of specialized RNA sequences.",
+  "max_new_tokens": 128
+}
+```
+4. Click **Execute**
 
 ---
 
@@ -233,21 +252,8 @@ Navigate to **http://localhost:8000/docs** for the interactive UI.
 4. **Symbolic Evaluation:** Utilizes `ast.literal_eval()` for secure, risk-free conversion of string-based literals into typed objects.
 5. **Pydantic Validation:** Maps unstructured extractions into rigid data contracts, ensuring strict schema compliance before the response exits the system.
 
----
 
 
-## 🧪 Try It
-
-1. Open `POST /v1/extract` in docs
-2. Click **Try it out**
-3. Paste:
-```json
-{
-  "text": "IL-2 stimulates the proliferation of T cells and upregulates the transcription of specialized RNA sequences.",
-  "max_new_tokens": 128
-}
-```
-4. Click **Execute**
 ---
 ![Docs](assets/bionlp_02.png)
 
@@ -258,6 +264,8 @@ Navigate to **http://localhost:8000/docs** for the interactive UI.
 | Initial Loading | Schema Interaction | Extraction Result |
 |:---:|:---:|:---:|
 | ![Loading](assets/bionlp_01.png) | ![Docs](assets/bionlp_02.png) | ![Result](assets/bionlp_03.png) |
+
+---
 
 
 ## ☁️ Target Production Deployment (Kaggle)
@@ -305,6 +313,8 @@ The project uses environment-specific dependency files to manage the split betwe
 
 > **Note:** When deploying to production (Kaggle/Cloud), always use the `requirements-gpu.txt` file. This includes `bitsandbytes` and `triton` kernels required for 4-bit quantization which are not supported on standard CPU-only environments.
 
+---
+
 ## 🛠️ Troubleshooting
 
 | Symptom | Cause | Fix |
@@ -315,6 +325,7 @@ The project uses environment-specific dependency files to manage the split betwe
 | `ast.literal_eval` parse failure | LLM generated malformed output | Check `raw_output` field in response; ensure input text is under token limit |
 | Slow first request | CUDA cold start / kernel compilation | Send a warmup request on startup or use `CUDA_LAUNCH_BLOCKING=0` |
 
+---
 
 
 ## 📄 License
