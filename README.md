@@ -39,7 +39,7 @@ By leveraging Unsloth’s Triton-optimized inference kernels and 4-bit quantizat
 
 
 
-## 🏗️ Technical Philosophy
+## 🧭 Technical Philosophy
 This service moves away from monolithic model serving by enforcing a decoupled architecture:
 
 - Compute Optimization: By utilizing 4-bit bitsandbytes quantization combined with Unsloth's optimized Triton kernels, we drastically reduce the VRAM overhead required to hold the model weights, enabling 8B parameter models to run on lower-tier GPUs (like the T4) without significant performance degradation.
@@ -117,7 +117,7 @@ The pipeline follows a strict, unidirectional state machine flow to minimize lat
 
 ---
 
-## Performance Benchmarks
+## 📊 Performance Benchmarks
 
 All measurements are for **LLaMA-3 8B 4-bit quantized inference** via Unsloth Triton kernels, extracting entities from PubMed-scale biomedical abstracts (~200–400 input tokens, `max_new_tokens=128`).
 
@@ -252,6 +252,7 @@ Navigate to **http://localhost:8000/docs** for the interactive UI.
 ![Docs](assets/bionlp_02.png)
 
 ---
+
 ## 📸 Interface Gallery
 
 | Initial Loading | Schema Interaction | Extraction Result |
@@ -259,30 +260,29 @@ Navigate to **http://localhost:8000/docs** for the interactive UI.
 | ![Loading](assets/bionlp_01.png) | ![Docs](assets/bionlp_02.png) | ![Result](assets/bionlp_03.png) |
 
 
-## Target Production Deployment (Kaggle)
+## ☁️ Target Production Deployment (Kaggle)
 To process live biomedical literature with hardware acceleration via Unsloth's optimized Triton kernels:
 
-1. Notebook Configuration
-
+**Notebook Configuration:** 
 Accelerator: Set to GPU T4 x2 (or P100) in the right-hand sidebar.
-
 Internet: Ensure the Internet toggle in the settings sidebar is set to On.
 
-2. Environment Provisioning
+**Environment Provisioning**
 
 ```Python
 !git clone https://github.com/aragit/bionlp-llama3-service.git
 %cd bionlp-llama3-service
 !pip install -r requirements-gpu.txt
 ```
-3. Execution Launch
+
+**Execution Launch**
 
 ```Python
 # Launch the inference gateway
 !RUNTIME_ENV=gpu uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
-*Note: Because Kaggle notebooks run in a container, the API will be accessible internally. To access this API from your local machine, you will need to tunnel the connection using a utility like ngrok.*
+*Note: Because Kaggle notebooks run in a container, the API will be accessible internally. To access this API from your local machine, you will need to tunnel the connection using autility like ngrok.*
 
 ---
 
@@ -305,7 +305,7 @@ The project uses environment-specific dependency files to manage the split betwe
 
 > **Note:** When deploying to production (Kaggle/Cloud), always use the `requirements-gpu.txt` file. This includes `bitsandbytes` and `triton` kernels required for 4-bit quantization which are not supported on standard CPU-only environments.
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
@@ -316,4 +316,16 @@ The project uses environment-specific dependency files to manage the split betwe
 | Slow first request | CUDA cold start / kernel compilation | Send a warmup request on startup or use `CUDA_LAUNCH_BLOCKING=0` |
 
 
+
+## 📄 License
+
+
+```bibtex
+@software{bionlp_llama3_2026,
+  author = {[Your Name]},
+  title = {Clinical Entity Extraction Engine},
+  url = {https://github.com/aragit/bionlp-llama3-service},
+  year = {2026}
+}
+```
 
